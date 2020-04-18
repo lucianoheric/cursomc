@@ -31,11 +31,9 @@ public class Pedido implements Serializable{
 	private Date instante;
 	
 	//garantir que o pagamento do pedido será 1 para 1 que que o id do pagamento será o mesmo do pedido
-	@JsonManagedReference // permite que o pagamento seja serializado pelo pedido
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "pedido")	
 	private Pagamento pagamento;
 	
-	@JsonManagedReference // os pedidos de um cliente serão serializados pela classe pedidos
 	@ManyToOne
 	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;
@@ -45,7 +43,6 @@ public class Pedido implements Serializable{
 	private Endereco enderecoDeEntrega;
 	
 	//Conjunto de ItemPedido, o pedido tem que conhecer seu itens
-	@JsonManagedReference // pedido serializa os itens do pedido
 	@OneToMany(mappedBy = "id.pedido")
 	private Set<ItemPedido> itens = new HashSet<>(); 
 	
