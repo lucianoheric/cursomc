@@ -5,10 +5,13 @@ import java.io.Serializable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class ItemPedido implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
+	@JsonIgnore // não será serializado será ignorado pelo spring boot
 	@EmbeddedId // por se tratar de uma chave composta
 	private ItemPedidoPK id = new ItemPedidoPK();
 	private Double desconto;
@@ -35,13 +38,17 @@ public class ItemPedido implements Serializable{
 
 	// incluindo os gets e setters do pedido e do produto
 	// para melhorar a semântica da classe ItemPedido
+	@JsonIgnore // não pode ser serializado pois tudo que começa com get é serializado
 	public Pedido getPedido() {
 		return id.getPedido();
 	}
 	
+	// retirado o @JsonIgnore pois os itens do pedido tem que poder serializar (somente no get)  os produtos
+	//@JsonIgnore // não pode ser serializado pois tudo que começa com get é serializado
 	public Produto getProduto() {
 		return id.getProduto();
 	}
+	
 	//fim dos gets e setters do pedido e do produto
 	public ItemPedidoPK getId() {
 		return id;
